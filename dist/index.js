@@ -52,7 +52,6 @@ function run() {
             const username = core.getInput('bot-username');
             const members = shuffle(teamMembers.split(','));
             const randomized = members.join('\n');
-            //TODO randomize teammembers
             yield axios_1.default.post(url, {
                 channel,
                 username,
@@ -67,7 +66,7 @@ function run() {
 }
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * i);
+        const j = Math.floor(Math.random() * (i + 1));
         const temp = array[i];
         array[i] = array[j];
         array[j] = temp;

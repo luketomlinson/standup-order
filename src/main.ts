@@ -13,7 +13,6 @@ async function run(): Promise<void> {
     const members = shuffle(teamMembers.split(','))
     const randomized = members.join('\n')
 
-    //TODO randomize teammembers
     await axios.post(url, {
       channel,
       username,
@@ -29,7 +28,7 @@ async function run(): Promise<void> {
 function shuffle(array: string[]): string[] {
   
   for(let i = array.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * i)
+    const j = Math.floor(Math.random() * (i + 1))
     const temp = array[i]
     array[i] = array[j]
     array[j] = temp
