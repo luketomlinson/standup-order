@@ -50,13 +50,14 @@ function run() {
             const prependMesage = core.getInput('prepend-message');
             const icon = core.getInput('icon-emoji');
             const username = core.getInput('bot-username');
-            const randomized = shuffle(teamMembers.split(',')).join('\n');
+            const members = shuffle(teamMembers.split(','));
+            const randomized = members.join('\n');
             //TODO randomize teammembers
             yield axios_1.default.post(url, {
                 channel,
                 username,
                 text: `${prependMesage}\n${randomized}`,
-                icon_emoji: `:${randomized[0]}:`
+                icon_emoji: `:${members[0]}:`
             });
         }
         catch (error) {

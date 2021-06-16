@@ -23,5 +23,5 @@ jobs:
       - uses: ./
         with:
           slack-channel: luketomlinson-chatops
-          team-members: 'me,myself,i'
+          team-members: 'luketomlinson,test'
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
