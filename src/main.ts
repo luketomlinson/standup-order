@@ -1,16 +1,23 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import axios from 'axios'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const url: string = core.getInput('slack-webhook-url')
+    const channel: string = core.getInput('slack-channel')
+    const teamMembers: string = core.getInput('team-members')
+    const prependMesage: string = core.getInput('prepend-message')
+    const icon: string = core.getInput('icon-emoji')
+    const username: string = core.getInput('bot-username')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    //TODO randomize teammembers
+    await axios.post(url, {
+      channel,
+      username,
+      text: `${prependMesage} ${teamMembers}`,
+      icon_emoji: icon
+    })
 
-    core.setOutput('time', new Date().toTimeString())
   } catch (error) {
     core.setFailed(error.message)
   }

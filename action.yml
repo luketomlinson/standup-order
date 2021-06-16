@@ -2,10 +2,27 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  milliseconds: # change this
+  slack-webhook-url: 
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'webhook url for slack'
+  slack-channel:
+    required: true
+    description: 'the slack channel to send the mesage to'
+  team-members:
+    required: true
+    description: 'a comma delimited list of team members'
+  prepend-message: 
+    required: false
+    description: 'The message preceding the randomized list'
+    default: "Today's standup order is:"
+  icon-emoji:
+    required: false
+    description: 'The slack emoji to use for the message'
+    default: ':game_die:'
+  bot-username:
+    required: false
+    description: 'The bot's username in slack'
+    default: 'Standup Order Bot'
 runs:
   using: 'node12'
   main: 'dist/index.js'

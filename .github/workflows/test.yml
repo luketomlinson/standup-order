@@ -1,6 +1,7 @@
 name: 'build-test'
 on: # rebuild any PRs and main branch changes
   pull_request:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -21,4 +22,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          milliseconds: 1000
+          channel: luketomlinson-chatops
+          team-members: 'me,myself,i'
+          slack-webhook-url: https://hooks.slack.com/services/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
