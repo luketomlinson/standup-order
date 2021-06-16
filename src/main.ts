@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import axios from 'axios'
 
-const numberEmojis = [':zero:',':one:',':two:',':three:',':four:',':five:',':six:',':sevent:',':eight:',':nine:']
+const numberEmojis = [':zero:',':one:',':two:',':three:',':four:',':five:',':six:',':seven:',':eight:',':nine:']
 
 async function run(): Promise<void> {
   try {
@@ -15,9 +15,9 @@ async function run(): Promise<void> {
 
     const randomizedMembers = shuffle(teamMembers.split(','))
     const formattedMembers = randomizedMembers.map((handle, index) => {
-      const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)] }).join()
+      const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)] }).join('')
       let line = `${digitEmojiString}  ${handle}`
-      return includeUserEmojis ? line + `  :${handle}:` : line
+      return includeUserEmojis ?  `:${handle}: ` + line : line
     }) .join('\n')
 
     await axios.post(url, {

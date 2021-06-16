@@ -15,5 +15,5 @@ jobs:
       - uses: ./
         with:
           slack-channel: luketomlinson-chatops
-          team-members: 'luketomlinson,test,game_die,another,foo,bar,baz,sleepy,happy,dopey,grumpy'
+          team-members: 'luketomlinson,test-gif,game_die,thank-you2,food,barney,bazinga,sleepy,joy,developers,grumpycat'
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
