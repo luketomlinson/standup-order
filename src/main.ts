@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import axios from 'axios'
 
-const numberEmojis = [':zero:',':one',':two',':three',':four',':five',':six',':sevent',':eight',':nine']
+const numberEmojis = [':zero:',':one:',':two:',':three:',':four:',':five:',':six:',':sevent:',':eight:',':nine:']
 
 async function run(): Promise<void> {
   try {
@@ -11,11 +11,13 @@ async function run(): Promise<void> {
     const prependMesage: string = core.getInput('prepend-message')
     const icon: string = core.getInput('icon-emoji')
     const username: string = core.getInput('bot-username')
+    const includeUserEmojis: string = core.getInput('include-user-emojis')
 
     const randomizedMembers = shuffle(teamMembers.split(','))
     const formattedMembers = randomizedMembers.map((handle, index) => {
       const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)] }).join()
-      return `${digitEmojiString}  ${handle}  :${handle}:`
+      let line = `${digitEmojiString}  ${handle}`
+      return includeUserEmojis ? line + `  :${handle}:` : line
     }) .join('\n')
 
     await axios.post(url, {
