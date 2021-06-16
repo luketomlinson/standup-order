@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const axios_1 = __importDefault(__webpack_require__(6545));
+const numberEmojis = [':zero:', ':one', ':two', ':three', ':four', ':five', ':six', ':sevent', ':eight', ':nine'];
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -50,13 +51,16 @@ function run() {
             const prependMesage = core.getInput('prepend-message');
             const icon = core.getInput('icon-emoji');
             const username = core.getInput('bot-username');
-            const members = shuffle(teamMembers.split(','));
-            const randomized = members.join('\n');
+            const randomizedMembers = shuffle(teamMembers.split(','));
+            const formattedMembers = randomizedMembers.map((handle, index) => {
+                const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)]; }).join();
+                return `${digitEmojiString}  ${handle}  :${handle}:`;
+            }).join('\n');
             yield axios_1.default.post(url, {
                 channel,
                 username,
-                text: `${prependMesage}\n${randomized}`,
-                icon_emoji: `:${members[0]}:`
+                text: `${prependMesage}\n${formattedMembers}`,
+                icon_emoji: icon
             });
         }
         catch (error) {

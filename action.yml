@@ -23,6 +23,10 @@ inputs:
     required: false
     description: "The bot's username in slack"
     default: 'Standup Order Bot'
+  include-user-emojis:
+    required: false
+    description: "Include the user's handle emoji (:handle:) in the list"
+    default: true
 runs:
   using: 'node12'
   main: 'dist/index.js'

@@ -1,6 +1,8 @@
 import * as core from '@actions/core'
 import axios from 'axios'
 
+const numberEmojis = [':zero:',':one',':two',':three',':four',':five',':six',':sevent',':eight',':nine']
+
 async function run(): Promise<void> {
   try {
     const url: string = core.getInput('slack-webhook-url')
@@ -10,14 +12,17 @@ async function run(): Promise<void> {
     const icon: string = core.getInput('icon-emoji')
     const username: string = core.getInput('bot-username')
 
-    const members = shuffle(teamMembers.split(','))
-    const randomized = members.join('\n')
+    const randomizedMembers = shuffle(teamMembers.split(','))
+    const formattedMembers = randomizedMembers.map((handle, index) => {
+      const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)] }).join()
+      return `${digitEmojiString}  ${handle}  :${handle}:`
+    }) .join('\n')
 
     await axios.post(url, {
       channel,
       username,
-      text: `${prependMesage}\n${randomized}`,
-      icon_emoji: `:${members[0]}:`
+      text: `${prependMesage}\n${formattedMembers}`,
+      icon_emoji: icon
     })
 
   } catch (error) {
