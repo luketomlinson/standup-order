@@ -4,7 +4,7 @@ author: 'Your name or organization here'
 inputs:
   slack-webhook-url: 
     required: true
-    description: 'webhook url for slack'
+    description: 'webhook url for slack. Please add as a secret or Slack will revoke it.'
   slack-channel:
     required: true
     description: 'the slack channel to send the mesage to'
@@ -21,7 +21,7 @@ inputs:
     default: ':game_die:'
   bot-username:
     required: false
-    description: 'The bot's username in slack'
+    description: "The bot's username in slack"
     default: 'Standup Order Bot'
 runs:
   using: 'node12'
