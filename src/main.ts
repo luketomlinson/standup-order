@@ -10,13 +10,13 @@ async function run(): Promise<void> {
     const icon: string = core.getInput('icon-emoji')
     const username: string = core.getInput('bot-username')
 
-    const randomized = shuffle(teamMembers.split(',')).join(',')
+    const randomized = shuffle(teamMembers.split(',')).join('\n -')
 
     //TODO randomize teammembers
     await axios.post(url, {
       channel,
       username,
-      text: `${prependMesage} ${randomized}`,
+      text: `${prependMesage}\n${randomized}`,
       icon_emoji: icon
     })
 
