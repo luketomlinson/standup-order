@@ -24,4 +24,4 @@ jobs:
         with:
           slack-channel: luketomlinson-chatops
           team-members: 'me,myself,i'
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}

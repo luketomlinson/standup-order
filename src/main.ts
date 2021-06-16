@@ -17,7 +17,7 @@ async function run(): Promise<void> {
       channel,
       username,
       text: `${prependMesage}\n${randomized}`,
-      icon_emoji: icon
+      icon_emoji: `:${randomized[0]}:`
     })
 
   } catch (error) {
