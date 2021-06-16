@@ -10,17 +10,31 @@ async function run(): Promise<void> {
     const icon: string = core.getInput('icon-emoji')
     const username: string = core.getInput('bot-username')
 
+    const randomized = shuffle(teamMembers.split(',')).join(',')
+
     //TODO randomize teammembers
     await axios.post(url, {
       channel,
       username,
-      text: `${prependMesage} ${teamMembers}`,
+      text: `${prependMesage} ${randomized}`,
       icon_emoji: icon
     })
 
   } catch (error) {
     core.setFailed(error.message)
   }
+}
+
+function shuffle(array: string[]): string[] {
+  
+  for(let i = array.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * i)
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+
+  return array
 }
 
 run()

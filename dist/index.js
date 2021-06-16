@@ -50,11 +50,12 @@ function run() {
             const prependMesage = core.getInput('prepend-message');
             const icon = core.getInput('icon-emoji');
             const username = core.getInput('bot-username');
+            const randomized = shuffle(teamMembers.split(',')).join(',');
             //TODO randomize teammembers
             yield axios_1.default.post(url, {
                 channel,
                 username,
-                text: `${prependMesage} ${teamMembers}`,
+                text: `${prependMesage} ${randomized}`,
                 icon_emoji: icon
             });
         }
@@ -62,6 +63,15 @@ function run() {
             core.setFailed(error.message);
         }
     });
+}
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i);
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
 }
 run();
 
