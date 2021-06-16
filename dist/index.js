@@ -54,9 +54,8 @@ function run() {
             const includeUserEmojis = core.getInput('include-user-emojis');
             const randomizedMembers = shuffle(teamMembers.split(','));
             const formattedMembers = randomizedMembers.map((handle, index) => {
-                const digitEmojiString = [...`${index}`].map((char) => { return numberEmojis[parseInt(char)]; }).join('');
-                let line = `${digitEmojiString}  ${handle}`;
-                return includeUserEmojis ? `:${handle}: ` + line : line;
+                const digitEmojiString = [...`${index + 1}`].map((char) => { return numberEmojis[parseInt(char)]; }).join('');
+                return `${digitEmojiString} ${includeUserEmojis ? handle + ' ' : ''}${handle}`;
             }).join('\n');
             yield axios_1.default.post(url, {
                 channel,
