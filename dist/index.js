@@ -52,7 +52,9 @@ function run() {
             const icon = core.getInput('icon-emoji');
             const username = core.getInput('bot-username');
             const includeUserEmojis = core.getInput('include-user-emojis');
-            const randomizedMembers = shuffle(teamMembers.split(','));
+            const teamMembersList = teamMembers.split(',');
+            const numberOfPeople = getNumberOfPeople() || teamMembersList.length;
+            const randomizedMembers = shuffle(teamMembersList).slice(0, numberOfPeople);
             const formattedMembers = randomizedMembers.map((handle, index) => {
                 const digitEmojiString = [...`${index + 1}`].map((char) => { return numberEmojis[parseInt(char)]; }).join('');
                 return `${digitEmojiString} ${includeUserEmojis ? ':' + handle + ': ' : ''}${handle}`;
@@ -77,6 +79,13 @@ function shuffle(array) {
         array[j] = temp;
     }
     return array;
+}
+function getNumberOfPeople() {
+    const numberOfPeople = parseInt(core.getInput('number-of-people'));
+    if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+        return null;
+    }
+    return numberOfPeople;
 }
 run();
 
