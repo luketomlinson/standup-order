@@ -27,6 +27,10 @@ inputs:
     required: false
     description: "Include the user's handle emoji (:handle:) in the list"
     default: true
+  number-of-people:
+    required: false
+    description: "The number of people to return"
+    default: -1
 runs:
   using: 'node12'
   main: 'dist/index.js'

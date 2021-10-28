@@ -12,8 +12,10 @@ async function run(): Promise<void> {
     const icon: string = core.getInput('icon-emoji')
     const username: string = core.getInput('bot-username')
     const includeUserEmojis: string = core.getInput('include-user-emojis')
-
-    const randomizedMembers = shuffle(teamMembers.split(','))
+    const teamMembersList = teamMembers.split(',')
+    const numberOfPeople = getNumberOfPeople() || teamMembersList.length
+    
+    const randomizedMembers = shuffle(teamMembersList).slice(0, numberOfPeople)
     const formattedMembers = randomizedMembers.map((handle, index) => {
       const digitEmojiString = [...`${index + 1}`].map((char) => { return numberEmojis[parseInt(char)] }).join('')
       return `${digitEmojiString} ${includeUserEmojis ? ':' + handle + ': ' : ''}${handle}`
@@ -27,7 +29,7 @@ async function run(): Promise<void> {
     })
 
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed((error as Error).message)
   }
 }
 
@@ -41,6 +43,16 @@ function shuffle(array: string[]): string[] {
   }
 
   return array
+}
+
+function getNumberOfPeople() {
+  const numberOfPeople = parseInt(core.getInput('number-of-people'))
+
+  if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
+    return null
+  }
+
+  return numberOfPeople
 }
 
 run()
