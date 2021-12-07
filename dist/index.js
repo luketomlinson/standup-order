@@ -41,7 +41,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const axios_1 = __importDefault(__webpack_require__(6545));
-const numberEmojis = [':zero:', ':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:'];
+const numberEmojis = [
+    ':zero:',
+    ':one:',
+    ':two:',
+    ':three:',
+    ':four:',
+    ':five:',
+    ':six:',
+    ':seven:',
+    ':eight:',
+    ':nine:'
+];
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -52,11 +63,27 @@ function run() {
             const icon = core.getInput('icon-emoji');
             const username = core.getInput('bot-username');
             const includeUserEmojis = core.getInput('include-user-emojis');
+            const isRandom = core.getInput('random') === 'true';
             const teamMembersList = teamMembers.split(',');
             const numberOfPeople = getNumberOfPeople() || teamMembersList.length;
-            const randomizedMembers = shuffle(teamMembersList).slice(0, numberOfPeople);
-            const formattedMembers = randomizedMembers.map((handle, index) => {
-                const digitEmojiString = [...`${index + 1}`].map((char) => { return numberEmojis[parseInt(char)]; }).join('');
+            let output;
+            if (isRandom) {
+                output = shuffle(teamMembersList).slice(0, numberOfPeople);
+            }
+            else {
+                const date = 7; //new Date().getDate() // 1-31
+                const startIndex = ((teamMembersList.length + date) % teamMembersList.length) - 1;
+                const prefix = teamMembersList.slice(0, startIndex);
+                const suffix = teamMembersList.slice(startIndex, teamMembersList.length);
+                const finalArray = suffix.concat(prefix).slice(0, numberOfPeople);
+                output = finalArray;
+            }
+            const formattedMembers = output.map((handle, index) => {
+                const digitEmojiString = [...`${index + 1}`]
+                    .map(char => {
+                    return numberEmojis[parseInt(char)];
+                })
+                    .join('');
                 return `${digitEmojiString} ${includeUserEmojis ? ':' + handle + ': ' : ''}${handle}`;
             }).join('\n');
             yield axios_1.default.post(url, {
