@@ -14,7 +14,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          number-of-people: 2
+          prepend-message: "Today's standup driver is:"
+          number-of-people: 1
+          icon-emoji: ':car:'
           slack-channel: luketomlinson-chatops
           team-members: 'luketomlinson,test-gif,game_die,thank-you2,food,barney,bazinga,sleepy,joy,developers,grumpycat'
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
