@@ -71,7 +71,7 @@ function run() {
                 output = shuffle(teamMembersList).slice(0, numberOfPeople);
             }
             else {
-                const date = 12; //new Date().getDate() // 1-31
+                const date = new Date().getDate(); // 1-31
                 const startIndex = ((teamMembersList.length + date) % teamMembersList.length) - 1;
                 const prefix = teamMembersList.slice(0, startIndex);
                 const suffix = teamMembersList.slice(startIndex, teamMembersList.length);
