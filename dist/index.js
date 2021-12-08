@@ -90,7 +90,8 @@ function run() {
                 channel,
                 username,
                 text: `${prependMesage}\n${formattedMembers}`,
-                icon_emoji: icon
+                icon_emoji: icon,
+                link_names: true
             });
         }
         catch (error) {
