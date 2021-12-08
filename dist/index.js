@@ -85,7 +85,7 @@ function run() {
                     return numberEmojis[parseInt(char)];
                 })
                     .join('');
-                return `${digitEmojiString} ${includeUserEmojis ? `:${handle}` : ''}@${handle}`;
+                return `${digitEmojiString} ${includeUserEmojis ? `:${handle}:` : ''}@${handle}`;
             })
                 .join('\n');
             yield axios_1.default.post(url, {

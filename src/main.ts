@@ -50,7 +50,7 @@ async function run(): Promise<void> {
           })
           .join('')
         return `${digitEmojiString} ${
-          includeUserEmojis ? `:${handle}` : ''
+          includeUserEmojis ? `:${handle}:` : ''
         }@${handle}`
       })
       .join('\n')
