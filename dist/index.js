@@ -72,7 +72,7 @@ function run() {
             }
             else {
                 const date = Date.now() / 1000 / 86400;
-                const startIndex = ((teamMembersList.length + date) % teamMembersList.length) - 1;
+                const startIndex = (teamMembersList.length + date) % teamMembersList.length;
                 const prefix = teamMembersList.slice(0, startIndex);
                 const suffix = teamMembersList.slice(startIndex, teamMembersList.length);
                 const finalArray = suffix.concat(prefix).slice(0, numberOfPeople);
