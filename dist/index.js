@@ -71,21 +71,23 @@ function run() {
                 output = shuffle(teamMembersList).slice(0, numberOfPeople);
             }
             else {
-                const date = 1; //new Date().getDate() // 1-31
+                const date = Date.now() / 1000 / 86400;
                 const startIndex = ((teamMembersList.length + date) % teamMembersList.length) - 1;
                 const prefix = teamMembersList.slice(0, startIndex);
                 const suffix = teamMembersList.slice(startIndex, teamMembersList.length);
                 const finalArray = suffix.concat(prefix).slice(0, numberOfPeople);
                 output = finalArray;
             }
-            const formattedMembers = output.map((handle, index) => {
+            const formattedMembers = output
+                .map((handle, index) => {
                 const digitEmojiString = [...`${index + 1}`]
                     .map(char => {
                     return numberEmojis[parseInt(char)];
                 })
                     .join('');
-                return `${digitEmojiString} ${includeUserEmojis ? ':' + handle + ': ' : ''}@${handle}`;
-            }).join('\n');
+                return `${digitEmojiString} ${includeUserEmojis ? `:${handle}` : ''}@${handle}`;
+            })
+                .join('\n');
             yield axios_1.default.post(url, {
                 channel,
                 username,

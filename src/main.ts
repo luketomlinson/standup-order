@@ -31,10 +31,10 @@ async function run(): Promise<void> {
 
     if (isRandom) {
       output = shuffle(teamMembersList).slice(0, numberOfPeople)
-    }
-    else {
-      const date = 1//new Date().getDate() // 1-31
-      const startIndex = ((teamMembersList.length + date) % teamMembersList.length) - 1
+    } else {
+      const date = Date.now() / 1000 / 86400
+      const startIndex =
+        ((teamMembersList.length + date) % teamMembersList.length) - 1
 
       const prefix = teamMembersList.slice(0, startIndex)
       const suffix = teamMembersList.slice(startIndex, teamMembersList.length)
@@ -42,14 +42,18 @@ async function run(): Promise<void> {
       output = finalArray
     }
 
-    const formattedMembers = output.map((handle, index) => {
-      const digitEmojiString = [...`${index + 1}`]
-        .map(char => {
-          return numberEmojis[parseInt(char)]
-        })
-        .join('')
-      return `${digitEmojiString} ${includeUserEmojis ? ':' + handle + ': ' : ''}@${handle}`
-    }).join('\n')
+    const formattedMembers = output
+      .map((handle, index) => {
+        const digitEmojiString = [...`${index + 1}`]
+          .map(char => {
+            return numberEmojis[parseInt(char)]
+          })
+          .join('')
+        return `${digitEmojiString} ${
+          includeUserEmojis ? `:${handle}` : ''
+        }@${handle}`
+      })
+      .join('\n')
 
     await axios.post(url, {
       channel,
@@ -58,14 +62,12 @@ async function run(): Promise<void> {
       icon_emoji: icon,
       link_names: true
     })
-
   } catch (error) {
     core.setFailed((error as Error).message)
   }
 }
 
 function shuffle(array: string[]): string[] {
-
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     const temp = array[i]
@@ -76,7 +78,7 @@ function shuffle(array: string[]): string[] {
   return array
 }
 
-function getNumberOfPeople() {
+function getNumberOfPeople(): number | null {
   const numberOfPeople = parseInt(core.getInput('number-of-people'))
 
   if (isNaN(numberOfPeople) || numberOfPeople <= 0) {
