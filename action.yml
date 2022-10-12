@@ -31,6 +31,10 @@ inputs:
     required: false
     description: "The number of people to return"
     default: -1
+  number-of-standups-per-week:
+    required: false
+    description: "The number of standups per week is used to rotate through members evenly."
+    default: 7
 runs:
   using: 'node12'
   main: 'dist/index.js'
