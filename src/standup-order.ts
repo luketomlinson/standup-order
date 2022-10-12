@@ -37,7 +37,7 @@ export async function run(): Promise<void> {
       output = shuffle(teamMembersList).slice(0, numberOfPeople)
     } else {
       const daysSinceEpoch = Date.now() / 1000 / 86400
-      const standupsSinceEpoch = daysSinceEpoch / numberOfStandups
+      const standupsSinceEpoch = Math.floor(daysSinceEpoch / numberOfStandups)
       const startIndex =
         (teamMembersList.length + standupsSinceEpoch) % teamMembersList.length
 
