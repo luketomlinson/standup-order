@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import axios from 'axios'
+import * as parser from 'cron-parser'
 
 const numberEmojis = [
   ':zero:',
@@ -29,7 +30,8 @@ export async function run(): Promise<void> {
     const isRandom: boolean = core.getInput('random') === 'true'
     const teamMembersList = teamMembers.split(',')
     const numberOfPeople = getNumberOfPeople() || teamMembersList.length
-    const numberOfStandups = getNumberOfStandups() || defaultStandupFrequencyPerWeek
+    const numberOfStandups = getNumberOfStandups()
+    const cronSchedule = core.getInput('cron-schedule')
 
     let output: string[]
 
@@ -37,9 +39,30 @@ export async function run(): Promise<void> {
       output = shuffle(teamMembersList).slice(0, numberOfPeople)
     } else {
       const daysSinceEpoch = Date.now() / 1000 / 86400
-      const standupsSinceEpoch = Math.floor(daysSinceEpoch / numberOfStandups)
-      const startIndex =
-        (teamMembersList.length + standupsSinceEpoch) % teamMembersList.length
+
+      const weeksSinceEpoch = Math.floor(daysSinceEpoch / 7)
+
+      let standupsThisWeekSoFar = 0
+
+      if (cronSchedule) {
+        const options = {utc: true}
+        const interval = parser.parseExpression(cronSchedule, options)
+
+        let dt = interval.prev().toDate()
+        let lastSunday = new Date()
+        lastSunday.setDate(lastSunday.getUTCDate() - lastSunday.getUTCDay())
+        while (dt > lastSunday) { 
+          standupsThisWeekSoFar++ 
+          dt = interval.prev().toDate()
+        }
+      }
+
+      let startIndex = daysSinceEpoch % teamMembersList.length;
+
+      if (numberOfStandups) {
+        const standupsSinceEpoch = (weeksSinceEpoch * numberOfStandups) + standupsThisWeekSoFar
+        startIndex = standupsSinceEpoch % teamMembersList.length
+      }
 
       const prefix = teamMembersList.slice(0, startIndex)
       const suffix = teamMembersList.slice(startIndex, teamMembersList.length)

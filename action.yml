@@ -35,6 +35,10 @@ inputs:
     required: false
     description: "The number of standups per week is used to rotate through members evenly."
     default: 7
+  cron-schedule:
+    required: false
+    description: "GitHub Actions cron schedule for scheduled runs"
+    default: '0 5 * * *'
 runs:
   using: 'node12'
   main: 'dist/index.js'
