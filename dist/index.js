@@ -90,21 +90,26 @@ function run() {
             }
             else {
                 const daysSinceEpoch = Date.now() / 1000 / 86400;
-                const weeksSinceEpoch = Math.floor(daysSinceEpoch / 7);
                 let standupsThisWeekSoFar = 0;
                 if (cronSchedule) {
                     const options = { utc: true };
                     const interval = parser.parseExpression(cronSchedule, options);
+                    // A bit of a hack. If you manually run, we should pick the same person as
+                    // if it were the last cron run. To do this, we can subtract one hour from
+                    // the next run, then go back to the previous cron.
+                    interval.next().subtractHour();
                     let dt = interval.prev().toDate();
                     let lastSunday = new Date();
                     lastSunday.setDate(lastSunday.getUTCDate() - lastSunday.getUTCDay());
-                    while (dt > lastSunday) {
+                    while (dt >= lastSunday) {
                         standupsThisWeekSoFar++;
                         dt = interval.prev().toDate();
                     }
                 }
                 let startIndex = daysSinceEpoch % teamMembersList.length;
                 if (numberOfStandups) {
+                    let today = new Date();
+                    const weeksSinceEpoch = Math.floor((daysSinceEpoch + (7 - today.getUTCDay())) / 7);
                     const standupsSinceEpoch = (weeksSinceEpoch * numberOfStandups) + standupsThisWeekSoFar;
                     startIndex = standupsSinceEpoch % teamMembersList.length;
                 }
