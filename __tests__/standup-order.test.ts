@@ -355,4 +355,53 @@ describe('run', () => {
       },
     )
   })
+
+  it('realistic', async () => {
+    // Setup
+    jest.setSystemTime(new Date('2022-11-04T04:00:00.000Z'))
+
+    const url = 'slack.com'
+    const channel = '#my-slack-channel'
+    const username = 'link-'
+    const prependMessage = `Today's standup driver is:`
+    const iconEmoji = 'icon'
+    const text = `${prependMessage}\n:one: @${username}`
+    const linkNames = true
+
+    let mockInputs: {[index: string]:any} = {
+      'slack-webhook-url': url,
+      'slack-channel': channel,
+      'team-members': `tingluohuang,fhammerl,link-,pje,thboop,cory-miller,lokesh755`,
+      'prepend-message': prependMessage,
+      'icon-emoji': iconEmoji,
+      'bot-username': username,
+      'include-user-emojis': false,
+      'random': false,
+      'number-of-people': 1,
+      'number-of-standups-per-week': 1,
+      'cron-schedule': '0 8 * * 5',
+    }
+
+    jest
+      .spyOn(core, 'getInput')
+      .mockImplementation((name: string, ...opts) => mockInputs[name])
+
+    mockedAxios.post.mockResolvedValue({})
+
+    // Act
+    await run()
+
+    // Assert
+    expect(mockedAxios.post).toBeCalledTimes(1)
+    expect(mockedAxios.post).toBeCalledWith(
+      url, 
+      {
+        channel,
+        username,
+        text: text,
+        icon_emoji: iconEmoji,
+        link_names: linkNames,
+      },
+    )
+  })
 })
